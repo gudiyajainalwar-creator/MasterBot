@@ -1,0 +1,61 @@
+pipfrom pyrogram import Client, filters from pyrogram.types import Message import os from dotenv import 
+load_dotenv cd ~/MasterBot nano main.py# ------------------------------ LOAD ENV VARIABLES 
+------------------------------ load_dotenv() API_ID = int(os.getenv("API_ID")) API_HASH = os.getenv("API_HASH") 
+BOT_TOKEN = os.getenv("BOT_TOKEN") OWNER_ID = int(os.getenv("OWNER_ID")) from pyrogram import Client, filters 
+from pyrogram.types import Message# ------------------------------ CREATE PYROGRAM CLIENT 
+------------------------------ app = Client( import os "MasterBot", from dotenv import load_dotenv 
+api_id=API_ID,
+    api_hash=API_HASH, bot_token=BOT_TOKEN,
+# ------------------------------) LOAD ENV VARIABLES ------------------------------ /START COMMAND 
+# ------------------------------ ------------------------------@app.on_message(filters.command(["start"]))
+load_dotenv()async def start(_, message: Message): first = message.from_user.first_name await 
+    message.reply_text(
+        f"Hi {first}, I am Master — a cute and sweet 20-year-old AI girl.\n" f"Add me to your groups and make me 
+        admin to unlock full moderation, " f"AI chat, VC music, filters, whispers, friend lists, polls, and 
+        more."
+API_ID = int(os.getenv("API_ID")) ) API_HASH = os.getenv("API_HASH") BOT_TOKEN = os.getenv("BOT_TOKEN")# 
+------------------------------ OWNER_ID = int(os.getenv("OWNER_ID"))# OWNER-ONLY /PING COMMAND
+# ------------------------------ ------------------------------@app.on_message(filters.command("ping") & 
+# filters.user(OWNER_ID)) CREATE PYROGRAM CLIENTasync def ping(_, message: Message): 
+# ------------------------------ await message.reply_text("Pong! Bot owner verified.") 
+# ------------------------------ NATURAL LANGUAGE MODERATION COMMANDS ------------------------------
+app = Client(@app.on_message(filters.text & filters.group) async def moderation_commands(_, message: Message): 
+    "MasterBot", text = message.text.lower() user = None duration = 0 api_id=API_ID, api_hash=API_HASH, # 
+    Example: "master [user] ko [time] ke liye mute karo" import re mute_match = re.search(r"master (.+?) ko 
+    (\d+) ?min", text) if mute_match: bot_token=BOT_TOKEN, username_or_name = mute_match.group(1)
+) duration = int(mute_match.group(2)) if message.entities: for ent in message.entities:
+# ------------------------------ if ent.type == "mention": /START COMMAND user = await _.get_users(ent.user_id) 
+# ------------------------------ if user:
+@app.on_message(filters.command(["start"])) await message.chat.restrict_member( user.id, 
+                permissions=ChatPermissions(
+async def start(_, message: Message): can_send_messages=False, can_send_media_messages=False, 
+                    can_send_other_messages=False, can_add_web_page_previews=False
+    first = message.from_user.first_name ), until_date=int(asyncio.get_event_loop().time()) + duration*60 await 
+    message.reply_text( )
+        f"Hi {first}, I am Master — a cute and sweet 20-year-old AI girl.\n" await 
+            message.reply_text(f"{user.first_name} ko {duration} min ke liye mute kar diya gaya.") return
+        f"Add me to your groups and make me admin to unlock full moderation, " f"AI chat, VC music, filters, 
+        whispers, friend lists, polls, and more."  # Example: "master ban [user]"
+    ) if text.startswith("master ban"): parts = text.split() if len(parts) >= 3: username_or_name = parts[2] 
+            try:
+# ------------------------------ user = await _.get_users(username_or_name) OWNER-ONLY /PING COMMAND await 
+# message.chat.ban_member(user.id) ------------------------------ await message.reply_text(f"{user.first_name} 
+# ko ban kar diya gaya.")
+@app.on_message(filters.command("ping") & filters.user(OWNER_ID)) except: await message.reply_text("User nahi 
+                mila ya ban karne mein error aaya.")
+async def ping(_, message: Message): return await message.reply_text("Pong! Bot owner verified.")# 
+    ------------------------------
+# SIMPLE AI CHAT LISTENER ------------------------------ 
+# ------------------------------@app.on_message(filters.text & filters.group) SIMPLE AI CHAT LISTENERasync def 
+# ai_chat(_, message: Message): ------------------------------ text = message.text.lower()
+@app.on_message(filters.text & filters.group) async def ai_chat(_, message: Message): # Only respond when 
+someone says "master" or "dm"
+    text = message.text.lower() if text.startswith("master") or text.startswith("dm"): await 
+        message.reply_text("I am here and listening… full AI mode is enabled!")
+    # Otherwise do nothing – allows moderation commands to work Only respond when someone says "master" or "dm"
+    if text.startswith("master") or text.startswith("dm"):# ------------------------------ await 
+        message.reply_text("I am here and listening… full AI mode is enabled!")# BOT START
+    # Otherwise do nothing – allows moderation commands to work# ------------------------------
+print("Master Bot Started...") app.run()
+# ------------------------------ BOT START ------------------------------
+print("Master Bot Started...") app.run() cd ~/MasterBot python3 main.py

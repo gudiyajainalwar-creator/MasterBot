@@ -1,0 +1,13 @@
+pyrogram==2.0.106
+tgcrypto
+pymongo
+requests
+aiohttp
+pydub
+python-dotenv
+transformers
+sentencepiece
+openai
+librosa
+soundfile
+pycryptodome
